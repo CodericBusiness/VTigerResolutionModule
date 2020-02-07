@@ -181,5 +181,5 @@ class Resolution extends Vtiger_CRMEntity {
 		$sql		=	"INSERT INTO `vtiger_app2tab` (`tabid` ,`appname` ,`sequence` ,`visible`)VALUES (?, ?, ?, ?)";
 		$result		=	$adb->pquery($sql,array($tabid,$parent,$sequence,1));		
 	}
-	
+	// TODO
 }

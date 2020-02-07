@@ -8,7 +8,7 @@
     <vtiger_version>7.1.0</vtiger_version>
   </dependencies>
   <license>
-    <inline><![CDATA[Dev by Neftalí Yagua for Nodexum SAS.]]></inline>
+    <inline><![CDATA[Dev by Neftalí Yagua for Nodexum SAS. Learn more in official website]]></inline>
   </license>
   <tables>
     <table>

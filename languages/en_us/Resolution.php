@@ -12,9 +12,5 @@ $languageStrings = Array(
 	'LBL_RESOLUTION_INFORMATION' => 'Resolution Information',
 
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
-
-	
-
 );
-	
 ?>

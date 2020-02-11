@@ -8,8 +8,21 @@ $languageStrings = Array(
 	'LBL_ADD_RECORD' => 'Nueva Resolución',
 	'LBL_RECORDS_LIST' => 'Lista de Resoluciones',
 	
-	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
+	'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
+	'LBL_RESOLUTION_INFORMATION' => 'Información de Resolución',
+
+	'Resolution' => 'Resolución',
+	'Prefix' => 'Prefíjo',
+	'Serial' => 'Serial',
+	'From' => 'Desde',
+	'To' => 'Hasta',
+	'Expedition' => 'Expedición',
+	'Validity' => 'Válidez',
+	'Type' => 'Tipo',
+	'Invoices' => 'Facturas',
+	'Debit' => 'Débito',
+	'Credit' => 'Crédito',
+	'Contingency' => 'Contingencia',
 
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
 

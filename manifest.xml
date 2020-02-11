@@ -26,7 +26,7 @@
   </tables>
   <blocks>
     <block>
-      <label>RESOLUTION</label>
+      <label>LBL_RESOLUTION_INFORMATION</label>
       <fields>
         <field>
           <fieldname>resolutionno</fieldname>

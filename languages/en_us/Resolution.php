@@ -9,7 +9,7 @@ $languageStrings = Array(
 	'LBL_RECORDS_LIST' => 'Resolution List',
 	
 	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
+	'LBL_RESOLUTION_INFORMATION' => 'Resolution Information',
 
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
 

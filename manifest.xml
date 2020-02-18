@@ -13,7 +13,7 @@
   <tables>
     <table>
       <name>vtiger_resolution</name>
-      <sql><![CDATA[CREATE TABLE `vtiger_resolution` (`resolutionid` int(11) NOT NULL, `resolutionno` varchar(100) default NULL, `resolution_tks_resolution` BIGINT(255) default NULL ,`resolution_tks_prefix` varchar(4) default NULL ,`resolution_tks_serial` BIGINT(255) default NULL ,`resolution_tks_from` int(11) default NULL ,`resolution_tks_to` int(11) default NULL ,`resolution_tks_expedition` date default NULL ,`resolution_tks_validity` int(3) default NULL ,`resolution_tks_type` varchar(100) default NULL   , PRIMARY KEY (`resolutionid`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+      <sql><![CDATA[CREATE TABLE `vtiger_resolution` (`resolutionid` int(11) NOT NULL, `resolutionno` varchar(100) default NULL, `resolution_tks_resolution` BIGINT(255) default NULL ,`resolution_tks_prefix` varchar(4) default NULL ,`resolution_tks_serial` BIGINT(255) default 0,`resolution_tks_from` int(11) default NULL ,`resolution_tks_to` int(11) default NULL ,`resolution_tks_expedition` date default NULL ,`resolution_tks_validity` int(3) default NULL ,`resolution_tks_type` varchar(100) default NULL   , PRIMARY KEY (`resolutionid`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
     </table>
     <table>
       <name>vtiger_resolutioncf</name>
@@ -26,11 +26,11 @@
     <table>
       <name>get_serial_resolution</name>
       <sql><![CDATA[
-      CREATE FUNCTION `get_serial_resolution`(
-  resolution bigint,
+      CREATE FUNCTION `get_serial_resolution`(resolution bigint,
   prefix Varchar(4),
   restype Varchar(100)
-) RETURNS int(11) BEGIN
+) RETURNS int(11)
+BEGIN
 SET
   @key = (
     SELECT
@@ -52,11 +52,11 @@ END
     <table>
       <name>serial_resolution</name>
       <sql><![CDATA[
-CREATE FUNCTION `serial_resolution`(
-  resolution bigint,
+CREATE FUNCTION `serial_resolution`(resolution bigint,
   prefix Varchar(4),
   restype Varchar(100)
-) RETURNS int(11) BEGIN
+) RETURNS int(11)
+BEGIN
 SET
   @key = (
     SELECT
@@ -93,24 +93,28 @@ END
     <table>
       <name>vtiger_view_resolution</name>
       <sql><![CDATA[
-CREATE VIEW `vtiger_view_resolution` AS
-SELECT
-  `vtiger_resolution`.`resolutionid` AS `resolutionid`,
-  `vtiger_resolution`.`resolutionno` AS `resolutionno`,
-  `vtiger_resolution`.`resolution_tks_resolution` AS `resolution_tks_resolution`,
-  `vtiger_resolution`.`resolution_tks_prefix` AS `resolution_tks_prefix`,
-  `vtiger_resolution`.`resolution_tks_serial` AS `resolution_tks_serial`,
-  `vtiger_resolution`.`resolution_tks_from` AS `resolution_tks_from`,
-  `vtiger_resolution`.`resolution_tks_to` AS `resolution_tks_to`,
-  `vtiger_resolution`.`resolution_tks_expedition` AS `resolution_tks_expedition`,
-  `vtiger_resolution`.`resolution_tks_validity` AS `resolution_tks_validity`,
-  `vtiger_resolution`.`resolution_tks_type` AS `resolution_tks_type`,
-  `vtiger_resolution`.`tags` AS `tags`
-FROM `vtiger_resolution`
-WHERE
-  `vtiger_resolution`.`resolution_tks_serial` <= `vtiger_resolution`.`resolution_tks_to`
-  AND `vtiger_resolution`.`resolution_tks_expedition` + INTERVAL `vtiger_resolution`.`resolution_tks_validity` MONTH >= CAST(CURRENT_TIMESTAMP() AS DATE)
-      ]]></sql>
+          CREATE VIEW `vtiger_view_resolution` AS
+    SELECT 
+        `vtiger_resolution`.`resolutionid` AS `resolutionid`,
+        `vtiger_resolution`.`resolutionno` AS `resolutionno`,
+        `vtiger_resolution`.`resolution_tks_resolution` AS `resolution_tks_resolution`,
+        `vtiger_resolution`.`resolution_tks_prefix` AS `resolution_tks_prefix`,
+        `vtiger_resolution`.`resolution_tks_serial` AS `resolution_tks_serial`,
+        `vtiger_resolution`.`resolution_tks_from` AS `resolution_tks_from`,
+        `vtiger_resolution`.`resolution_tks_to` AS `resolution_tks_to`,
+        `vtiger_resolution`.`resolution_tks_expedition` AS `resolution_tks_expedition`,
+        `vtiger_resolution`.`resolution_tks_validity` AS `resolution_tks_validity`,
+        `vtiger_resolution`.`resolution_tks_type` AS `resolution_tks_type`,
+        `vtiger_resolution`.`tags` AS `tags`,
+        GET_SERIAL_RESOLUTION(`vtiger_resolution`.`resolution_tks_resolution`,
+                `vtiger_resolution`.`resolution_tks_prefix`,
+                `vtiger_resolution`.`resolution_tks_type`) AS `resolution_tks_next`
+    FROM
+        `vtiger_resolution`
+    WHERE
+        `vtiger_resolution`.`resolution_tks_serial` < `vtiger_resolution`.`resolution_tks_to`
+            AND `vtiger_resolution`.`resolution_tks_expedition` + INTERVAL `vtiger_resolution`.`resolution_tks_validity` MONTH >= CAST(CURRENT_TIMESTAMP() AS DATE)
+     ]]></sql>
     </table>
   </tables>
   <blocks>
@@ -186,7 +190,7 @@ WHERE
           <fieldlabel>Serial</fieldlabel>
           <readonly>1</readonly>
           <presence>2</presence>
-          <defaultvalue>1</defaultvalue>
+          <defaultvalue>0</defaultvalue>
           <sequence>3</sequence>
           <maximumlength>11</maximumlength>
           <typeofdata>I~M</typeofdata>

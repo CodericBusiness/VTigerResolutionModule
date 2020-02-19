@@ -106,7 +106,7 @@ END
         `vtiger_resolution`.`resolution_tks_validity` AS `resolution_tks_validity`,
         `vtiger_resolution`.`resolution_tks_type` AS `resolution_tks_type`,
         `vtiger_resolution`.`tags` AS `tags`,
-        GET_SERIAL_RESOLUTION(`vtiger_resolution`.`resolution_tks_resolution`,
+        get_serial_resolution(`vtiger_resolution`.`resolution_tks_resolution`,
                 `vtiger_resolution`.`resolution_tks_prefix`,
                 `vtiger_resolution`.`resolution_tks_type`) AS `resolution_tks_next`
     FROM

@@ -95,6 +95,7 @@ class Resolution extends Vtiger_CRMEntity {
 			Resolution::checkWebServiceEntry();
 			Resolution::createUserFieldTable($moduleName);
 			Resolution::addInTabMenu($moduleName);
+			Resolution::createViews();
 		} else if($eventType == 'module.disabled') {
 			// TODO Handle actions before this module is being uninstalled.
 		} else if($eventType == 'module.preuninstall') {
@@ -148,7 +149,35 @@ class Resolution extends Vtiger_CRMEntity {
 		}
 		$log->debug("Exiting checkWebServiceEntry() method....");					
 	}
-	
+	static function createViews()
+	{
+		global $log;
+		$log->debug("Entering createViews() method....");
+		global $adb;
+		
+		$sql	=	"CREATE VIEW `vtiger_view_resolution` AS
+		SELECT 
+			`vtiger_resolution`.`resolutionid` AS `resolutionid`,
+			`vtiger_resolution`.`resolutionno` AS `resolutionno`,
+			`vtiger_resolution`.`resolution_tks_resolution` AS `resolution_tks_resolution`,
+			`vtiger_resolution`.`resolution_tks_prefix` AS `resolution_tks_prefix`,
+			`vtiger_resolution`.`resolution_tks_serial` AS `resolution_tks_serial`,
+			`vtiger_resolution`.`resolution_tks_from` AS `resolution_tks_from`,
+			`vtiger_resolution`.`resolution_tks_to` AS `resolution_tks_to`,
+			`vtiger_resolution`.`resolution_tks_expedition` AS `resolution_tks_expedition`,
+			`vtiger_resolution`.`resolution_tks_validity` AS `resolution_tks_validity`,
+			`vtiger_resolution`.`resolution_tks_type` AS `resolution_tks_type`,
+			`vtiger_resolution`.`tags` AS `tags`,
+			get_serial_resolution(`vtiger_resolution`.`resolution_tks_resolution`,
+					`vtiger_resolution`.`resolution_tks_prefix`,
+					`vtiger_resolution`.`resolution_tks_type`) AS `resolution_tks_next`
+		FROM
+			`vtiger_resolution`
+		WHERE
+			`vtiger_resolution`.`resolution_tks_serial` < `vtiger_resolution`.`resolution_tks_to`
+				AND `vtiger_resolution`.`resolution_tks_expedition` + INTERVAL `vtiger_resolution`.`resolution_tks_validity` MONTH >= CAST(CURRENT_TIMESTAMP() AS DATE)";
+		$result	=	$adb->pquery($sql,array());					
+	}
 	static function createUserFieldTable($module)
 	{
 		global $log;
@@ -164,7 +193,6 @@ class Resolution extends Vtiger_CRMEntity {
 						ENGINE=InnoDB DEFAULT CHARSET=utf8";
 		$result	=	$adb->pquery($sql,array());					
 	}
-	
 	static function addInTabMenu($module)
 	{
 		global $log;
